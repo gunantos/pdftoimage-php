@@ -1,5 +1,6 @@
 # PDF TO IMAGE
 
+[![PHP Composer](https://github.com/gunantos/pdftoimage-php/actions/workflows/php.yml/badge.svg)](https://github.com/gunantos/pdftoimage-php/actions/workflows/php.yml)
 ![Discord](https://img.shields.io/discord/846036920811126844?style=plastic)
 ![Travis (.org)](https://img.shields.io/travis/gunantos/pdftoimage-php?style=plastic)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/gunantos/pdftoimage-php/main?style=plastic)
