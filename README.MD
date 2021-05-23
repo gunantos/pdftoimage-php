@@ -1,5 +1,8 @@
 # PDF TO IMAGE
 
+![Travis (.org)](https://img.shields.io/travis/gunantos/pdftoimage-php?style=plastic)
+![GitHub branch checks state](https://img.shields.io/github/checks-status/gunantos/pdftoimage-php/main?style=plastic)
+![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/andtho89/pdftoimage-php/main)<br>
 <a href="https://sponsor.app-kita.net" target="_blank"><img src="https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge" title="Pay Coffe" /></a><br>
 Pdf to image library using Imagick<br>
 
