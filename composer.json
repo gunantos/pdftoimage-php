@@ -3,7 +3,6 @@
     "description": "Convert PDF to Image using php",
     "type": "library",
     "require-dev": {
-        "php": "phpunit",
         "phpunit/phpunit": "^9.5"
     },
     "license": "MIT",
