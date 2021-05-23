@@ -1,8 +1,10 @@
 # PDF TO IMAGE
 
+![https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge](https://sponsor.app-kita.net)
+
 Pdf to image library using Imagick
 
-# INSTALATION
+## INSTALATION
 
 - Imagick
   1. Check PHP Version `php -i|find "PHP Version"`
@@ -12,11 +14,11 @@ Pdf to image library using Imagick
 - Library
   `composer install appkita/pdftoimage`
 
-# Lear More
+## Lear More
 
 - [php](https://www.php.net/manual/en)
 - [Imagick](https://www.php.net/manual/en/book.imagick.php)
 
-# Sponsor
+## Sponsor
 
 [Pay Coffe](https://sponsor.app-kita.net)
