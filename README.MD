@@ -1,6 +1,6 @@
 # PDF TO IMAGE
 
-<a href="https://sponsor.app-kita.net" target="_blank"></a><img src="https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge" title="Pay Coffe" /></a><br>
+<a href="https://sponsor.app-kita.net" target="_blank"><img src="https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge" title="Pay Coffe" /></a><br>
 Pdf to image library using Imagick<br>
 
 ## INSTALATION
