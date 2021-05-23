@@ -1,0 +1,22 @@
+{
+    "name": "appkita/pdftoimage",
+    "description": "Convert PDF to Image using php",
+    "type": "library",
+    "require-dev": {
+        "php": "phpunit",
+        "phpunit/phpunit": "^9.5"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "gunanto",
+            "email": "gunanto.simamora@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Appkita\\PDFtoImage\\": "src/"
+        }
+    },
+    "require": {}
+}
