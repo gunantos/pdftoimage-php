@@ -1,5 +1,6 @@
 # PDF TO IMAGE
 
+![Discord](https://img.shields.io/discord/846036920811126844?style=plastic)
 ![Travis (.org)](https://img.shields.io/travis/gunantos/pdftoimage-php?style=plastic)
 ![GitHub branch checks state](https://img.shields.io/github/checks-status/gunantos/pdftoimage-php/main?style=plastic)
 ![Bitbucket Pipelines](https://img.shields.io/bitbucket/pipelines/andtho89/pdftoimage-php/main)<br>
