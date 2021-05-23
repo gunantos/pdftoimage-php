@@ -22,6 +22,10 @@ Pdf to image library using Imagick<br>
 - [php](https://www.php.net/manual/en)
 - [Imagick](https://www.php.net/manual/en/book.imagick.php)
 
+## Chat
+
+[Discord](https://discord.gg/bXUWCSaw)
+
 ## Sponsor
 
 [Pay Coffe](https://sponsor.app-kita.net)
