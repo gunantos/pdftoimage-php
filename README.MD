@@ -15,11 +15,11 @@ Pdf to image library using Imagick<br>
   3. Check PHP Architecture `php -i|find "Architecture"`
   4. Download imagick from [Imagick](https://pecl.php.net/package/imagick)
   5. Once you downloaded the correct files:
-     a. Extract from php_imagick-….zip the php_imagick.dll file, and save it to the ext directory of your PHP installation
-     b. Extract from ImageMagick-….zip the DLL files located in the bin folder that start with CORE_RL or IM_MOD_RL, and save them to the PHP root directory (where you have php.exe), or to a directory in your PATH variable
-     c. Add this line to your php.ini file:
-     d. extension=php_imagick.dll
-     e. Restart the Apache/NGINX Windows service (if applicable)
+     - Extract from php_imagick-….zip the php_imagick.dll file, and save it to the ext directory of your PHP installation
+     - Extract from ImageMagick-….zip the DLL files located in the bin folder that start with CORE_RL or IM_MOD_RL, and save them to the PHP root directory (where you have php.exe), or to a directory in your PATH variable
+     - Add this line to your php.ini file:
+     - extension=php_imagick.dll
+     - Restart the Apache/NGINX Windows service (if applicable)
 
 6. To test if the extension works, you can run this PHP code:
    ```php
