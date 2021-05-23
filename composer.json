@@ -13,11 +13,7 @@
         "php": ">=7.0",
         "ext-imagick": "*"
     },
-    "autoload-dev": {
-        "psr-4": {
-            "Tests\\": "tests/"
-        }
-    },
+    "autoload-dev": {},
     "suggest": {
         "ext-fileinfo": "Improves mime type detection for files"
     },
