@@ -3,7 +3,6 @@
     "description": "Convert PDF to Image using php",
     "type": "library",
     "require-dev": {
-        "phpunit/phpunit": "^9.5"
     },
     "autoload": {
         "psr-4": {
@@ -21,9 +20,6 @@
     },
     "suggest": {
         "ext-fileinfo": "Improves mime type detection for files"
-    },
-    "scripts": {
-        "test": "phpunit"
     },
     "license": "MIT",
     "authors": [
