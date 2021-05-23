@@ -20,4 +20,4 @@ Pdf to image library using Imagick
 # Sponsor
 
 If you like this please sponsor me by scan QR
-<img src="https://app-kita.com/sponsor.png" />
+<img src="https://app-kita.com/sponsor.png" with="250" title="Pay coffe"/>
