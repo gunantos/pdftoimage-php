@@ -16,3 +16,8 @@ Pdf to image library using Imagick
 
 - [php](https://www.php.net/manual/en)
 - [Imagick](https://www.php.net/manual/en/book.imagick.php)
+
+# Sponsor
+
+If you like this please sponsor me by scan QR
+<img src="https://app-kita.com/sponsor.png" />
