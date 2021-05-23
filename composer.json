@@ -5,6 +5,26 @@
     "require-dev": {
         "phpunit/phpunit": "^9.5"
     },
+    "autoload": {
+        "psr-4": {
+            "Appkita\\PDFtoImage\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=7.0",
+        "ext-imagick": "*"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        }
+    },
+    "suggest": {
+        "ext-fileinfo": "Improves mime type detection for files"
+    },
+    "scripts": {
+        "test": "phpunit"
+    },
     "license": "MIT",
     "authors": [
         {
@@ -12,10 +32,9 @@
             "email": "gunanto.simamora@gmail.com"
         }
     ],
-    "autoload": {
-        "psr-4": {
-            "Appkita\\PDFtoImage\\": "src/"
-        }
-    },
-    "require": {}
+    "support": {
+		"forum": "http://app-kita.com/",
+		"source": "https://github.com/gunantos/pdf-to-image",
+		"slack": "app-kita.slack.com"
+	}
 }
