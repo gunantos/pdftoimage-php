@@ -1,8 +1,8 @@
 # PDF TO IMAGE
 
-![https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge](https://sponsor.app-kita.net)
-
 Pdf to image library using Imagick
+![GitHub Sponsors](https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge)
+[Pay Coffe](https://sponsor.app-kita.net)
 
 ## INSTALATION
 
