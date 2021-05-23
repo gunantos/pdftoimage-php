@@ -7,7 +7,7 @@
 <a href="https://sponsor.app-kita.net" target="_blank"><img src="https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge" title="Pay Coffe" /></a><br>
 Pdf to image library using Imagick<br>
 
-## INSTALATION
+### INSTALATION
 
 - Imagick
 
@@ -36,15 +36,15 @@ Pdf to image library using Imagick<br>
 - Library
   `composer install appkita/pdftoimage`
 
-## Lear More
+### Lear More
 
 - [php](https://www.php.net/manual/en)
 - [Imagick](https://www.php.net/manual/en/book.imagick.php)
 
-## Chat
+### Chat
 
 [Discord](https://discord.gg/bXUWCSaw)
 
-## Sponsor
+### Sponsor
 
 [Pay Coffe](https://sponsor.app-kita.net)
