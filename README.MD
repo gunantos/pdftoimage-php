@@ -70,7 +70,7 @@ Pdf to image library using Imagick<br>
   * Or
   */
   $convert = new \Appkita\PDFtoImage\Convert();
-  $result = $convert->setFile($filepdf)->run($spesific_page, $options);
+  $result = $convert->setFile($filepdf)->run($spesific_page, $options); // if is_string $options return $path output
 ```
 
 2. URL
