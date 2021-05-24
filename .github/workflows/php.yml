@@ -1,5 +1,4 @@
 name: PHP Composer
-uses: shivammathur/setup-php@v2
 on:
   push:
     branches: [main]
