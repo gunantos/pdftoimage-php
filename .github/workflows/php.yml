@@ -4,14 +4,15 @@ on:
     branches: [main]
   pull_request:
     branches: [main]
-with:
-  php-version: "7.3"
-  extensions: imagick
 jobs:
   build:
     runs-on: windows-latest
 
     steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: "7.3"
+          extensions: imagick
       - uses: actions/checkout@v2
 
       - name: Validate composer.json and composer.lock
