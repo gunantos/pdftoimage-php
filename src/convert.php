@@ -69,7 +69,9 @@ Class Convert {
             $imagick->mergeImageLayers($this->layerMethod);
         }
         $imagick->setFormat($this->format);
-        return $imagick;
+        $output = $imagick;
+        $imagick->clear();
+        return $output;
     }
     
     public function run(int $page = null, string $output = '')

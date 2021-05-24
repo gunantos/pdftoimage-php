@@ -23,6 +23,7 @@ trait Config {
         $imagick = new Imagick();
         $imagick->pingImage($this->file);
         $this->count_page = $imagick->getNumberImages();
+        $imagick->clear();
         return $this;
     }
 

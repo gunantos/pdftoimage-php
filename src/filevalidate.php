@@ -6,11 +6,6 @@ use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use \Appkita\PDFtoImage\Exceptions\UrlNotFound;
 
 class FileValidate {
-    private $method_remote_allow = [
-        'https',
-        'http',
-        'ftp'
-    ];
     private $auth = '';
     private $file_output = '';
 
