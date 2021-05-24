@@ -3,6 +3,7 @@ namespace Appkita\PDFtoImage;
 
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
+use \Appkita\PDFtoImage\Exceptions\UrlNotFound;
 
 class FileValidate {
     private $method_remote_allow = [
@@ -21,10 +22,10 @@ class FileValidate {
            throw new PdfDoesNotExist("You must set file pdf to convert"); 
         }
         
-        if ($this->isFile($file)) {
-            $this->file_output = $this->cekFile($file);
-        } else {
+        if (\filter_var($file, FILTER_VALIDATE_URL)) {
             $this->file_output = $this->loadRemote($file);
+        } else {
+            $this->file_output = $this->cekFile($file);
         }
     }
 
@@ -43,34 +44,29 @@ class FileValidate {
         return $file;
     }
 
-    protected function isFile(string $file) : bool {
-        for($i = 0; $i < \sizeof($this->method_remote_allow); $i++) {
-            if (\strpos($this->method_remote_allow[$i].':', $this->file)) {
-                return false;
-                break;
-            }
-        }
-        return true;
-    }
-
     protected function loadRemote(string $file) : string {
         $output= __DIR__.DIRECTORY_SEPARATOR."temp".DIRECTORY_SEPARATOR."temp_download.pdf";
-        $file = \fopen($output, "w");
-        $ch = curl_init($this->file);
-        curl_setopt($ch, CURLOPT_NOBODY, true);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, 0);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
-        curl_setopt($curl, CURLOPT_FILE, $file);
+        $hasil = \fopen($output, "w");
+        $options = array(
+           CURLOPT_FILE  => $hasil,
+           CURLOPT_TIMEOUT => 28800,
+           CURLOPT_URL => $file,
+           CURLOPT_SSL_VERIFYHOST => 0,
+           CURLOPT_SSL_VERIFYPEER => 0
+
+        );
         if (!empty($this->auth)) {
-            curl_setopt($curl, CURLOPT_USERPWD, $this->auth);
+            $options[CURLOPT_USERPWD] = $this->auth;
         }
+        $ch = \curl_init();
+        curl_setopt_array($ch, $options);
         curl_exec($ch);
         $responseCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         curl_close($ch);
         if($responseCode == 200){
             return $output;
         }else{
-            throw new PdfDoesNotExist("File `{$this->file}` does not exist"); 
+            throw new UrlNotFound("File `{$this->file}` does not exist"); 
         }
     }
 }
