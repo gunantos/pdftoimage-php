@@ -1,23 +1,25 @@
 <?php
 namespace Appkita\PDFtoImage;
-use Imageick;
-use Config;
-use FileValidate;
-use Output;
+use \Imagick;
+use \Appkita\PDFtoImage\Config;
+use \Appkita\PDFtoImage\FileValidate;
+use \Appkita\PDFtoImage\Output;
 use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 
 
-Class PdftoImage {
-    private int $page = 1;
-    protected array $validOutputFormats = ['jpg', 'jpg', 'png'];
+Class Convert {
+    private $page = 1;
+    protected $validOutputFormats = ['jpg', 'jpg', 'png'];
     private $not_change = ['count_page', 'file'];
+    private $_output;
 
     function __construct(string $file='', array $config=[]) {
         if (!empty($file)) {
             $this->setFile($file);
         }
+        $this->_output = new Output();
         $this->initConfig($config);
     }
 
@@ -30,7 +32,7 @@ Class PdftoImage {
             }
             for($i = 0; $i < sizeof($config); $i++) {
                 if (\sizeof($val) > $i) {
-                    Config::{$val[$i]} = $config[$i];
+                    $this->{$val[$i]} = $config[$i];
                 }
             }
         }else{
@@ -42,15 +44,20 @@ Class PdftoImage {
     }
 
     public function setFile($file) {
-        Config::$file = FileValidate($file);
+        $validate = new FileValidate($file);
+        Config::$file = $validate->get();
         $imagick = new Imagick();
         $imagick->pingImage(Config::$file);
         Config::$count_page = $imagick->getNumberImages();
     }
 
+    private function _configClass() {
+        return new ReflectionClass('Config');
+    }
+
     public function __get($name) {
         if (\property_exists('Config', $name)) {
-            return Config::{$name};
+           return $this->_configClass()->getStaticPropertyValue($name);
         }
     }
 
@@ -66,7 +73,7 @@ Class PdftoImage {
                     \mkdir($path, $mode);
                 }
             }
-            Config::{$name} = $value;
+            return $this->_configClass()->getProperty($name)->setValue($value);
         }
     }
 
@@ -74,7 +81,7 @@ Class PdftoImage {
         return (object) \get_class_vars('Config');
     }
 
-    private function _convert(string $file = '', array $config=[]) : array {
+    private function _convert(string $file = '', array $config=[]) {
         if (!empty($file)) {
             $this->setFile($file);
         }
@@ -90,14 +97,14 @@ Class PdftoImage {
             $imagick->setCompressionQuality(Config::$quality);
         }
         $imagick->readImage(sprintf('%s[%s]', Config::$file, $this->page - 1));
-        if (is_int(Config::$layer_method)) {
-            $imagick = $this->imagick->mergeImageLayers($this->layerMethod);
+        if (!empty(Config::$layer_method) && is_int(Config::$layer_method)) {
+            $imagick->mergeImageLayers($this->layerMethod);
         }
         $imagick->setFormat(Config::$format);
         return $imagick;
     }
     
-    public function convert(int $page = null, string $output = '')
+    public function run(int $page = null, string $output = '')
     {
         if (!empty($page)) {
             if ($page <= Config::$count_page) {
@@ -111,8 +118,8 @@ Class PdftoImage {
             }
         }
         $pdffilename = basename(Config::$file,".pdf");
-        Output::$filename = null;
-        Output::$data = null;
+        $this->_output->$filename = null;
+        $this->_output->$data = null;
         if (Config::$count_page > 0) {
             if (!empty($page)) {
                 if ($page > Config::$count_page) {
@@ -128,27 +135,27 @@ Class PdftoImage {
                 }
                 $data = $this->_convert();
                 if (file_put_contents($filename, $data)) {
-                    Output::$filename = $filename;
-                    Output::$data = $this->_convert();
+                    $this->_output->$filename = $filename;
+                    $this->_output->$data = $this->_convert();
                 }
             } else {
-                Output::$filename = [];
-                Output::$data = [];
+                $this->_output->$filename = [];
+                $this->_output->$data = [];
                 for ($i = 0; $i < Config::$count_page; $i++) {
                     $this->page += $i;
                     $filename = Config::$path.DIRECTORY_SEPARATOR.$pdffilename.'-'.(!empty(Config::$prefix) ? Config::$prefix.'-' : '').$this->page.'.'.Config::$format;
                     $data = $this->_convert();
                     if (file_put_contents($filename, $data)) {
-                        Output::$filename[$i] = $filename;
-                        Output::$data[$i] = $this->_convert($filename);
+                        $this->_output->$filename[$i] = $filename;
+                        $this->_output->$data[$i] = $this->_convert($filename);
                     }else{
-                        Output::$filename[$i] = null;
-                        Output::$data[$i] = null;
+                        $this->_output->$filename[$i] = null;
+                        $this->_output->$data[$i] = null;
                     }
                 }
             }
         }
-        return Output::$filename;
+        return $this;
     }
 
     public function output() {

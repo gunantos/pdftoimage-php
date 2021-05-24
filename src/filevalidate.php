@@ -4,8 +4,8 @@ namespace Appkita\PDFtoImage;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 
 class FileValidate {
-    private string $file = '';
-    private array $method_remote_allow = [
+    private $file = '';
+    private $method_remote_allow = [
         'https',
         'http',
         'ftp'
@@ -20,9 +20,9 @@ class FileValidate {
             $this->auth = "$username:$password";
         }
         if ($this->isFile($this->file)) {
-            return $this->cekFile();
+            $this->cekFile();
         } else {
-            return $this->loadRemote();
+            $this->loadRemote();
         }
     }
 

@@ -2,8 +2,6 @@
     "name": "appkita/pdftoimage",
     "description": "Convert PDF to Image using php",
     "type": "library",
-    "require-dev": {
-    },
     "autoload": {
         "psr-4": {
             "Appkita\\PDFtoImage\\": "src/"
@@ -13,7 +11,11 @@
         "php": ">=7.0",
         "ext-imagick": "*"
     },
-    "autoload-dev": {},
+    "autoload-dev": {
+        "psr-4": { 
+            "Tests\\": "tests/"
+        }
+    },
     "suggest": {
         "ext-fileinfo": "Improves mime type detection for files"
     },
@@ -28,5 +30,8 @@
 		"forum": "http://app-kita.com/",
 		"source": "https://github.com/gunantos/pdf-to-image",
 		"slack": "app-kita.slack.com"
-	}
+	},
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    }
 }
