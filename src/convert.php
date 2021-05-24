@@ -3,7 +3,6 @@ namespace Appkita\PDFtoImage;
 use \Imagick;
 use \Appkita\PDFtoImage\Config;
 use \Appkita\PDFtoImage\Output;
-use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 
@@ -48,7 +47,7 @@ Class Convert {
         return $this;
     }
 
-    private function _convert($page = null, string $file = '', array $config=[]) {
+    private function _convert(string $file = '', array $config=[], $page = null) {
         if (!empty($file)) {
             $this->setFile($file);
         }
@@ -64,7 +63,7 @@ Class Convert {
         if (!empty($this->quality)) {
             $imagick->setCompressionQuality($this->quality);
         }
-        $halaman = 1;
+        $halaman = $this->page - 1;
         $imagick->readImage(sprintf('%s[%s]', $this->file, $halaman));
         if (!empty($this->layer_method) && is_int($this->layer_method)) {
             $imagick->mergeImageLayers($this->layerMethod);
@@ -95,17 +94,18 @@ Class Convert {
                 $data = $this->_convert();
                 if (file_put_contents($filename, $data)) {
                     $this->_output->$filename = $filename;
-                    $this->_output->$data = $this->_convert();
+                    $this->_output->$data = $data;
                 }
             } else {
                 $this->_output->$filename = [];
                 $this->_output->$data = [];
                 for ($i = 0; $i < $this->count_page; $i++) {
+                    $this->set_page(($i + 1));
                     $filename = $this->_create_filename($i);
-                    $data = $this->_convert(($i + 1));
+                    $data = $this->_convert();
                     if (file_put_contents($filename, $data)) {
                         $this->_output->$filename[$i] = $filename;
-                        $this->_output->$data[$i] = $this->_convert($filename);
+                        $this->_output->$data[$i] = $data;
                     }else{
                         $this->_output->$filename[$i] = null;
                         $this->_output->$data[$i] = null;

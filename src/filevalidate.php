@@ -2,6 +2,7 @@
 namespace Appkita\PDFtoImage;
 
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
+use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 
 class FileValidate {
     private $method_remote_allow = [
