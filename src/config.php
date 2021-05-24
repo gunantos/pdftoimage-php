@@ -1,6 +1,6 @@
 <?php
 namespace Appkita\PDFtoImage;
-use Imagick;
+use \Imagick;
 use \Appkita\PDFtoImage\FileValidate;
 
 trait Config {
@@ -25,17 +25,26 @@ trait Config {
         $this->count_page = $imagick->getNumberImages();
     }
 
+    private function _get_reflection_property(int $type = null) {
+        $cfg = new \ReflectionClass($this);
+        $property = $cfg->getProperties($type);
+        $output = [];
+        foreach($property as $key) {
+            array_push($output, [$key->name, $this->{$key->name}]);
+        }
+        return $output;
+    }
+
     protected function _get_config(string $key = null, bool $sufix=false) {
         $key = \strtolower($key);
-        $cfg = new ReflectionObject($this);
-        $property = $cfg->getProperties(ReflectionProperty::IS_PROTECTED);
+        $property = $this->_get_reflection_property(\ReflectionProperty::IS_PROTECTED); 
         if (!empty($key)) {
             $val = null;
-            if (\in_array($key, $property)) {
+            if (!\in_array($key, $this->not_change)) {
                 if ($key == 'format' && $sufix) {
-                    $val = '.'. $this->format;
+                    $val = empty($this->format) ? '.png' : '.'.$this->format; 
                 } else if ($key == 'path' && $sufix) {
-                    $val =  $this->path.DIRECTORY_SEPARATOR;
+                    $val =  !empty($this->path) ? $this->path.DIRECTORY_SEPARATOR : '';
                 }else if ($key == 'prefix' && $sufix) {
                     $val = !empty($this->prefix) ? $this->prefix.'-' : '';
                 } else {
@@ -63,10 +72,10 @@ trait Config {
         }
     }
 
-    private function _set_config(string $key, mixed $val) {
+    private function _set_config(string $key, $val) {
         if (!empty($key)) {
             if (!\in_array($key, $this->not_change)) {
-                $this->_valdiate_config();
+                $this->_valdiate_config($key, $val);
                 $this->{$key} = $val;
             }
         }
