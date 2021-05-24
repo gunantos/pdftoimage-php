@@ -33,6 +33,7 @@ class FileValidate {
         if ($ext != 'pdf') {
             throw new InvalidFormat("File `{$file}` not support. File must be pdf"); 
         }
+        $file = \realpath($file);
         if (!\file_exists($file)) {
             throw new PdfDoesNotExist("File `{$file}` does not exist"); 
         }

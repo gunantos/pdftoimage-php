@@ -2,7 +2,6 @@
 namespace Appkita\PDFtoImage;
 use \Imagick;
 use \Appkita\PDFtoImage\Config;
-use \Appkita\PDFtoImage\Output;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 
@@ -10,12 +9,15 @@ use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 Class Convert {
     use Config;
     private $_output;
+    private $page = 0;
 
     function __construct(string $file='', array $config=[]) {
         if (!empty($file)) {
             $this->setFile($file);
         }
-        $this->_output = new Output();
+        $this->_output = new \stdClass();
+        $this->_output->filename = [];
+        $this->_output->error = [];
         $this->initConfig($config);
     }
 
@@ -47,14 +49,7 @@ Class Convert {
         return $this;
     }
 
-    private function _convert(string $file = '', array $config=[], $page = null) {
-        if (!empty($file)) {
-            $this->setFile($file);
-        }
-        if (\sizeof($config) > 0) {
-            $this->initConfig($config);
-        }
-        $this->set_page($page);
+    private function _convert($filename = null) {
         $imagick = new Imagick();
         $imagick->setResolution($this->resolution, $this->resolution);
         if (!empty($this->colorspace)){
@@ -63,71 +58,62 @@ Class Convert {
         if (!empty($this->quality)) {
             $imagick->setCompressionQuality($this->quality);
         }
-        $halaman = $this->page - 1;
-        $imagick->readImage(sprintf('%s[%s]', $this->file, $halaman));
+        if ($this->page > 0) {
+            $imagick->readImage(sprintf('%s[%s]', $this->file, ($this->page - 1)));
+        } else {
+            $imagick->readImage($this->file);
+        }
         if (!empty($this->layer_method) && is_int($this->layer_method)) {
             $imagick->mergeImageLayers($this->layerMethod);
         }
         $imagick->setFormat($this->format);
-        $output = $imagick;
-        $imagick->clear();
-        return $output;
+        foreach($imagick as $i=> $imagick) {
+            $output = $this->_create_filename(($i + 1), $filename);
+            $imagick->writeImage($output);
+            array_push($this->_output->filename, $output);
+        }
+        return $this;
     }
     
     public function run(int $page = null, string $output = '')
     {
         $this->set_page($page);
-        if (!empty($output)) {
-            if (is_dir($output)) {
-               $this->_set_config('path', $output);
-            }
+        $filename = '';
+        if (\is_array($output)) {
+            $this->initConfig($output);
+        } else {
+            $filename = $output;
         }
-        $this->_output->$filename = null;
-        $this->_output->$data = null;
         if ($this->count_page > 0) {
-            if (!empty($page)) {
-                if (!empty($output)) {
-                    if (\is_dir($output)){
-                        $filename = $this->_create_filename();
-                    }else{
-                        $filename = $output;
-                    }
-                }
-                $data = $this->_convert();
-                if (file_put_contents($filename, $data)) {
-                    $this->_output->$filename = $filename;
-                    $this->_output->$data = $data;
-                }
-            } else {
-                $this->_output->$filename = [];
-                $this->_output->$data = [];
-                for ($i = 0; $i < $this->count_page; $i++) {
-                    $this->set_page(($i + 1));
-                    $filename = $this->_create_filename($i);
-                    $data = $this->_convert();
-                    if (file_put_contents($filename, $data)) {
-                        $this->_output->$filename[$i] = $filename;
-                        $this->_output->$data[$i] = $data;
-                    }else{
-                        $this->_output->$filename[$i] = null;
-                        $this->_output->$data[$i] = null;
-                    }
-                }
-            }
+            $this->_convert($filename);
         }
-        return $this;
+        return $this->_output->filename;
     }
 
-    private function _create_filename(int $indeks = 0) {
-        $pdffilename = basename($this->file,".pdf");
-        $filename = $this->_get_config('path', true).$pdffilename.'-'.$this->_get_config('prefix', true);
-        if ($indeks > 0) {
-            $filename .= $indeks;
+    private function _create_filename($indeks = 0, string $filename='') {
+        if (!empty($filename) && is_dir($output)) {
+            $this->_set_config('path', $output);
         }
-        $filename .= $this->_get_config('format', true);
+        if (!empty($filename) && !is_dir($output)) {
+            $ext = \pathinfo($file, PATHINFO_EXTENSION);
+            $_tmp = \str_replace('.'.$ext, '', $filename);
+            $filename = $_temp.'-'. $indeks .'-of-'. $this->count_page .'.'. $ext;
+        } else {
+            $pdffilename = basename($this->file,".pdf");
+            $filename = $this->_get_config('path', true).$pdffilename.'-'.$this->_get_config('prefix', true);
+            if ($indeks > 0) {
+                $filename .= $indeks;
+            }
+            $filename .= $this->_get_config('format', true);
+        }
         return $filename;
     }
+
     public function output() {
-        return (object) \get_class_vars($this->output);
+        return $this->_output;
+    }
+
+    public function error() {
+        return $this->_output->error;
     }
 }
