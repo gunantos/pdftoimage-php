@@ -17,12 +17,13 @@ trait Config {
     private $validOutputFormats = ['jpg', 'jpg', 'png'];
     private $not_change = ['count_page', 'file', 'validOutputFormats'];
 
-    protected function setFile($file) {
+    public function setFile($file) {
         $validate = new FileValidate($file);
         $this->file = $validate->get();
         $imagick = new Imagick();
         $imagick->pingImage($this->file);
         $this->count_page = $imagick->getNumberImages();
+        return $this;
     }
 
     private function _get_reflection_property(int $type = null) {
