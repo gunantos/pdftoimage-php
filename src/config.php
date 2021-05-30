@@ -1,14 +1,14 @@
 <?php
 namespace Appkita\PDFtoImage;
 use Imagick;
-class Config {
-    public static $format = 'png';
-    public static $resolution = 144;
-    public static $path = '';
-    public static $prefix = 'convert';
-    public static $layer_method = Imagick::LAYERMETHOD_FLATTEN;
-    public static $colorspace;
-    public static $quality;
-    public static $count_page = 0;
-    public static  $file = '';
+trait Config {
+    protected $format = 'png';
+    protected $width = 144;
+    protected $height = 144;
+    protected $path = '';
+    protected $prefix = 'convert';
+    protected $layer_method = Imagick::LAYERMETHOD_FLATTEN;
+    protected $colorspace;
+    protected $quality;
+    protected $count_page = 0;
 }
