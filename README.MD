@@ -37,6 +37,44 @@ Pdf to image library using Imagick<br>
 - Library
   `composer install appkita/pdftoimage`
 
+### Use
+
+```php
+ $file = '<<pdf file>>';
+ //or
+ $file = 'URL FILE';
+ //configuration
+ $option = [
+   'path' => '<<result path>>', //default empty
+   'format' => 'png', //set image format output
+   'resolution' => 'set resultion image',
+   'prefix'=> 'convert', //set prefix name image
+   'layer_method'=>Imagick::LAYERMETHOD_FLATTEN, //follow Imagick Layer Method
+   'colosrpace'=> null, //follow Imagick colorspace
+   'quality'=> null, //follow imagick result quality
+ ];
+ $spesific_page = null;
+ $convert = new  \Appkita\PDFtoImage\Convert($file, $option);
+ $result = $convert->run(); //set null if you wont
+  //or
+  $result = $convert->run($spesific_page);
+
+ /**
+  * Or
+  */
+  $convert = new \Appkita\PDFtoImage\Convert($file);
+  $convert->path = '<<your path>>';
+  $convert->format = 'jpg';
+  $convert->run($spesific_page);
+ /**
+  * Or
+  */
+  $convert = new \Appkita\PDFtoImage\Convert();
+  $result = $convert->setFile($filepdf)->run($spesific_page, $options); // if is_string $options return $path output
+```
+
+2. URL
+
 ### Lear More
 
 - [php](https://www.php.net/manual/en)

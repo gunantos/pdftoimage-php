@@ -7,7 +7,7 @@ final class PDFtoImageTest extends PHPUnit\Framework\TestCase
         $file = __DIR__.DIRECTORY_SEPARATOR .'test.pdf';
         $convert = new Convert($file);
         $result = $convert->run();
-        $this->assertEquals($ttl_page, $result->config()->count_page);
+        $this->assertEquals($ttl_page, $result->config('count_page'));
     }
 }
 
