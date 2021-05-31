@@ -1,6 +1,7 @@
 <?php
 namespace Appkita\PDFtoImage;
 use \Imagick;
+use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 

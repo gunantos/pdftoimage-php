@@ -3,6 +3,10 @@ namespace Appkita\PDFtoImage;
 use \Imagick;
 use \Appkita\PDFtoImage\FileValidate;
 
+use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
+use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
+use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
+
 trait Config {
     protected $file = '';
     protected $format = 'png';
