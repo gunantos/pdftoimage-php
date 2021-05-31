@@ -90,10 +90,10 @@ Class Convert {
     }
 
     private function _create_filename($indeks = 0, string $filename='') {
-        if (!empty($filename) && is_dir($output)) {
+        if (!empty($filename) && is_dir($filename)) {
             $this->_set_config('path', $output);
         }
-        if (!empty($filename) && !is_dir($output)) {
+        if (!empty($filename) && !is_dir($filename)) {
             $ext = \pathinfo($file, PATHINFO_EXTENSION);
             $_tmp = \str_replace('.'.$ext, '', $filename);
             $filename = $_temp.'-'. $indeks .'-of-'. $this->count_page .'.'. $ext;
