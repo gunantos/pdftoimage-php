@@ -1,13 +1,11 @@
 <?php
 namespace Appkita\PDFtoImage;
 use \Imagick;
-use \Appkita\PDFtoImage\Config;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
-use \Appkita\PDFtoImage\ConfigPDFtoImage;
 
 Class Convert {
-    use ConfigPDFtoImage;
+    use \Appkita\PDFtoImage\Config;
     private $_output;
     private $page = 0;
 
