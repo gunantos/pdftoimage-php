@@ -7,8 +7,12 @@ trait Config {
     protected $file = '';
     protected $format = 'png';
     protected $resolution = [
-        'x'=>768,
-        'y'=>1024
+        'x'=>0,
+        'y'=>0
+    ];
+    protected $size = [
+        'width'=>768,
+        'height'=>1024
     ];
     protected $path = '';
     protected $prefix = 'convert';
@@ -16,6 +20,8 @@ trait Config {
     protected $colorspace;
     protected $quality;
     protected $count_page = 0;
+    protected $compress = '';
+    protected $compress_quality = 0;
     
     private $validOutputFormats = ['jpg', 'jpg', 'png'];
     private $not_change = ['count_page', 'file', 'validOutputFormats'];
@@ -30,6 +36,29 @@ trait Config {
         return $this;
     }
 
+    public function setSize(int $width, int $height) {
+        if ($width > 0) {
+            $this->size['width'] = $width;
+        }
+        if ($height > 0) {
+            $this->size['height'] = $height;
+        }
+        return $this;
+    }
+
+    public function setCompress($type) {
+        if (!empty($type)) {
+            $this->compress = $type;
+        }
+        return $this;
+    }
+
+    public function setCompressQuality(int $quality) {
+        if ($quality > 0) {
+            $this->$compress_quality = $quality;
+        }
+        return $this;
+    }
     public function setResolution(int $x, int $y) {
         if ($x > 0) {
             $this->resolution['x'] = $x;

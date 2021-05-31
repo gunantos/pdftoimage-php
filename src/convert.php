@@ -51,12 +51,22 @@ Class Convert {
 
     private function _convert($filename = null) {
         $imagick = new Imagick();
-        $imagick->setResolution($this->resolution['x'], $this->resolution['y']);
+        if (isset($this->resolution['x']) && isset($this->resolution['y'])) {
+            if ($this->resolution['x'] > 0 && $this->resolution['y'] > 0) {
+                 $imagick->setResolution($this->resolution['x'], $this->resolution['y']);
+            }
+        }
+       if (isset($this->size['width']) && isset($this->size['height']) && $this->size['width'] > 0 && $this->size['height'] > 0) {
+           $imagick->setSize($this->size['width'], $this->size['height']);
+       }
         if (!empty($this->colorspace)){
             $imagick->setColorspace($this->colorspace);
         }
-        if (!empty($this->quality)) {
-            $imagick->setCompressionQuality($this->quality);
+        if (!empty($this->compress)) {
+            $imagick->setCompression($compress);
+        }
+        if ($this->compress_quality > 0) {
+            $imagick->setCompressionQuality($this->compress_quality);
         }
         if ($this->page > 0) {
             $imagick->readImage(sprintf('%s[%s]', $this->file, ($this->page - 1)));
