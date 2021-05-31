@@ -63,7 +63,7 @@ Class Convert {
             $imagick->readImage($this->file);
         }
         if (!empty($this->layer_method) && is_int($this->layer_method)) {
-            $imagick->mergeImageLayers($this->layerMethod);
+            $imagick->mergeImageLayers($this->layer_method);
         }
         $imagick->setFormat($this->format);
         foreach($imagick as $i=> $imagick) {

@@ -67,7 +67,7 @@ trait Config {
                 }else if ($key == 'prefix' && $sufix) {
                     $val = !empty($this->prefix) ? $this->prefix.'-' : '';
                 } else {
-                    $val =  $property[$key];                         
+                    $val =  isset($property[$key]) ? $property[$key] : '';                         
                 }
             }
             return $val;
