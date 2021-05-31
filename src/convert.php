@@ -1,13 +1,12 @@
 <?php
 namespace Appkita\PDFtoImage;
 use \Imagick;
-use \Appkita\PDFtoImage\Config;
+use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
-use Appkita\PDFtoImage\Config;
 
 Class Convert {
-    use Config;
+    use \Appkita\PDFtoImage\Config;
     private $_output;
     private $page = 0;
 
@@ -74,7 +73,7 @@ Class Convert {
             $imagick->readImage($this->file);
         }
         if (!empty($this->layer_method) && is_int($this->layer_method)) {
-            $imagick->mergeImageLayers($this->layerMethod);
+            $imagick->mergeImageLayers($this->layer_method);
         }
         $imagick->setFormat($this->format);
         foreach($imagick as $i=> $imagick) {
@@ -101,10 +100,10 @@ Class Convert {
     }
 
     private function _create_filename($indeks = 0, string $filename='') {
-        if (!empty($filename) && is_dir($output)) {
+        if (!empty($filename) && is_dir($filename)) {
             $this->_set_config('path', $output);
         }
-        if (!empty($filename) && !is_dir($output)) {
+        if (!empty($filename) && !is_dir($filename)) {
             $ext = \pathinfo($file, PATHINFO_EXTENSION);
             $_tmp = \str_replace('.'.$ext, '', $filename);
             $filename = $_temp.'-'. $indeks .'-of-'. $this->count_page .'.'. $ext;

@@ -3,6 +3,10 @@ namespace Appkita\PDFtoImage;
 use \Imagick;
 use \Appkita\PDFtoImage\FileValidate;
 
+use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
+use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
+use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
+
 trait Config {
     protected $file = '';
     protected $format = 'png';
@@ -88,11 +92,11 @@ trait Config {
                 if ($key == 'format' && $sufix) {
                     $val = empty($this->format) ? '.png' : '.'.$this->format; 
                 } else if ($key == 'path' && $sufix) {
-                    $val =  !empty($this->path) ? $this->path.DIRECTORY_SEPARATOR : \dirname(\realpath($this->file)).DIRECTORY_SEPARATOR;
+                    $val =  !empty($this->path) ? \rtrim(\rtrim($this->path, '\\'), '/').DIRECTORY_SEPARATOR : \dirname(\realpath($this->file)).DIRECTORY_SEPARATOR;
                 }else if ($key == 'prefix' && $sufix) {
                     $val = !empty($this->prefix) ? $this->prefix.'-' : '';
                 } else {
-                    $val =  $property[$key];                         
+                    $val =  isset($property[$key]) ? $property[$key] : '';                         
                 }
             }
             return $val;
