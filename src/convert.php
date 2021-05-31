@@ -4,10 +4,10 @@ use \Imagick;
 use \Appkita\PDFtoImage\Config;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
-use Appkita\PDFtoImage\Config;
+use Appkita\PDFtoImage\ConfigPDFtoImage;
 
 Class Convert {
-    use Config;
+    use ConfigPDFtoImage;
     private $_output;
     private $page = 0;
 

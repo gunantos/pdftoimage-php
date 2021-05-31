@@ -3,7 +3,7 @@ namespace Appkita\PDFtoImage;
 use \Imagick;
 use \Appkita\PDFtoImage\FileValidate;
 
-trait Config {
+trait ConfigPDFtoImage {
     protected $file = '';
     protected $format = 'png';
     protected $resolution = [
