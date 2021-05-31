@@ -4,7 +4,7 @@ use \Imagick;
 use \Appkita\PDFtoImage\Config;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
-use Appkita\PDFtoImage\ConfigPDFtoImage;
+use \Appkita\PDFtoImage\ConfigPDFtoImage;
 
 Class Convert {
     use ConfigPDFtoImage;
