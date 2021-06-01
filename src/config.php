@@ -114,7 +114,7 @@ trait Config {
                 break;
             case 'path':
                 if (!\file_exists($value)) {
-                    \mkdir($value, $mode);
+                    \mkdir($value, 0777);
                 }
                 break;
         }
@@ -123,30 +123,19 @@ trait Config {
     private function _set_config(string $key, $val) {
         if (!empty($key)) {
             if (!\in_array($key, $this->not_change)) {
-                $this->_valdiate_config($key, $val);
-                $this->{$key} = $val;
+                if (isset($this->{$key})){
+                    $this->_valdiate_config($key, $val);
+                    $this->{$key} = $val;
+                }
             }
         }
     }
 
     protected function initConfig(array $config) {
         if (\is_array($config)) {
-            if (count($config) == count($config, COUNT_RECURSIVE)) {
-                $cfg = \get_object_vars($this);
-                $val = [];
-                foreach($cfg as $key => $value) {
-                    array_push($val, $key);
-                }
-                for($i = 0; $i < sizeof($config); $i++) {
-                    if (\sizeof($val) > $i) {
-                        $this->_set_config($val[$i],$config[$i]);
-                    }
-                }
-            }else{
                 foreach($config as $key => $value) {
                     $this->_set_config($key,$value);
                 }
-            }
         }
     }
 }
