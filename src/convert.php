@@ -62,7 +62,7 @@ Class Convert {
             $imagick->setColorspace($this->colorspace);
         }
         if (!empty($this->compress)) {
-            $imagick->setCompression($compress);
+            $imagick->setCompression($this->compress);
         }
         if ($this->compress_quality > 0) {
             $imagick->setCompressionQuality($this->compress_quality);
