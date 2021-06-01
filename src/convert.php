@@ -1,5 +1,11 @@
 <?php
 namespace Appkita\PDFtoImage;
+/**
+ * PDF TO IMAGE CONVERTER
+ * By: Gunanto Simamora
+ * 
+ * 
+ */
 use \Imagick;
 use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
