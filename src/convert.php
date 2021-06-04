@@ -81,6 +81,7 @@ Class Convert {
             $imagick->writeImage($output);
             array_push($this->_output->filename, $output);
         }
+        $imagick->clear();
         return $this;
     }
     
