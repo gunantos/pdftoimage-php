@@ -48,12 +48,18 @@ Installation
    a. Ghostscript
    download from [ghostscript](https://www.ghostscript.com/download/gsdnld.html)
    b. Imagick
+
    - Centos
-     - yum install php-imagick
-     - php -m | grep imagick
+     ```sh
+      sudo yum install php-imagick
+      php -m | grep imagick
+     ```
    - Debian
-     - sudo apt-get install php-imagick
-     - php -m | grep imagick
+
+   ```sh
+     sudo apt-get install php-imagick
+     php -m | grep imagick
+   ```
 
 ### Use
 
