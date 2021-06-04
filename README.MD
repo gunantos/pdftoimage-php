@@ -8,34 +8,52 @@
 <a href="https://sponsor.app-kita.net" target="_blank"><img src="https://img.shields.io/github/sponsors/gunantos?logo=gunantos&style=for-the-badge" title="Pay Coffe" /></a><br>
 Pdf to image library using Imagick<br>
 
-### INSTALATION
+Installation
 
-- Imagick
+- composer
+  `composer install appkita/pdftoimage`
+- download [Github](https://github.com/gunantos/pdftoimage-php/releases)
 
-  1. Check PHP Version `php -i|find "PHP Version"`
-  2. Check PHP is Thread Safety `php -i|find "Thread Safety"`
-  3. Check PHP Architecture `php -i|find "Architecture"`
-  4. Download imagick from [Imagick](https://pecl.php.net/package/imagick)
-  5. Once you downloaded the correct files:
+## NEW Version 3.0 (BETA)
 
+- add convert using ghostscript
+
+### INSTALLATION EXTENSION REQUET
+
+1. Windows
+   a. Ghostscript
+   download from [ghostscript](https://www.ghostscript.com/download/gsdnld.html)
+   b. Imagick
+
+   - Check PHP Version `php -i|find "PHP Version"`
+   - Check PHP is Thread Safety `php -i|find "Thread Safety"`
+   - Check PHP Architecture `php -i|find "Architecture"`
+   - Download imagick from [Imagick](https://pecl.php.net/package/imagick)
+   - Once you downloaded the correct files:
      - Extract from `php_imagick-….zip` the `php_imagick.dll `file, and save it to the ext directory of your PHP installation
      - Extract from `ImageMagick-….zip` the DLL files located in the bin folder that start with `CORE_RL` or `IM_MOD_RL`, and save them to the PHP root directory `(where you have php.exe)`, or to a directory in your PATH variable
      - Add this line to your `php.ini` file: `extension=php_imagick.dll`
      - Restart the Apache/NGINX Windows service (if applicable)
+   - To test if the extension works, you can run this PHP code:
+     ```php
+     <?php
+     $image = new Imagick();
+     $image->newImage(1, 1, new ImagickPixel('#ffffff'));
+     $image->setImageFormat('png');
+     $pngData = $image->getImagesBlob();
+     echo strpos($pngData, "\x89PNG\r\n\x1a\n") === 0 ? 'Ok' : 'Failed';
+     ```
 
-  6. To test if the extension works, you can run this PHP code:
-
-  ```php
-  <?php
-  $image = new Imagick();
-  $image->newImage(1, 1, new ImagickPixel('#ffffff'));
-  $image->setImageFormat('png');
-  $pngData = $image->getImagesBlob();
-  echo strpos($pngData, "\x89PNG\r\n\x1a\n") === 0 ? 'Ok' : 'Failed';
-  ```
-
-- Library
-  `composer install appkita/pdftoimage`
+2. Linux
+   a. Ghostscript
+   download from [ghostscript](https://www.ghostscript.com/download/gsdnld.html)
+   b. Imagick
+   - Centos
+     - yum install php-imagick
+     - php -m | grep imagick
+   - Debian
+     - sudo apt-get install php-imagick
+     - php -m | grep imagick
 
 ### Use
 

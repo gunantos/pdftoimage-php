@@ -7,9 +7,10 @@ namespace Appkita\PDFtoImage;
  * 
  */
 use \Imagick;
-use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
-use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
-use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
+use Appkita\PDFtoImage\Exceptions\InvalidFormat;
+use Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
+use Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
+use Appkita\PDFtoImage\IMAGE;
 
 Class Convert {
     use \Appkita\PDFtoImage\Config;
@@ -17,6 +18,8 @@ Class Convert {
     private $page = 0;
 
     function __construct(string $file='', array $config=[]) {
+        $this->OS = $this->getOS();
+        $this->cekOSExtendsion();
         if (!empty($file)) {
             $this->setFile($file);
         }
@@ -54,7 +57,11 @@ Class Convert {
         return $this;
     }
 
-    private function _convert($filename = null) {
+    private function _convert_command($filename = null) {
+
+    }
+
+    private function _convert_imagick($filename = null) {
         $imagick = new Imagick();
         if (isset($this->resolution['x']) && isset($this->resolution['y'])) {
             if ($this->resolution['x'] > 0 && $this->resolution['y'] > 0) {

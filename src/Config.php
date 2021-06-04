@@ -6,14 +6,13 @@ use \Appkita\PDFtoImage\FileValidate;
 use \Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
+use Appkita\PDFtoImage\Exceptions\ErrorConfig;
 
 trait Config {
+    protected $useType = 'imagick';
     protected $file = '';
     protected $format = 'png';
-    protected $resolution = [
-        'x'=>0,
-        'y'=>0
-    ];
+    protected $resolution = 144;
     protected $size = [
         'width'=>768,
         'height'=>1024
@@ -40,6 +39,13 @@ trait Config {
         return $this;
     }
 
+    public function setUse($use) {
+        if ($use != IMAGE::GHOSTSCRIPT && $use != IMAGE::IMAGICK) {
+            throw ErroConfig::forNotSupportLibrary($use);
+        }
+        $this->useType = $use;
+    }
+
     public function setSize(int $width, int $height) {
         if ($width > 0) {
             $this->size['width'] = $width;
@@ -63,12 +69,15 @@ trait Config {
         }
         return $this;
     }
-    public function setResolution(int $x, int $y) {
-        if ($x > 0) {
-            $this->resolution['x'] = $x;
+    public function setResolution(int $x) {
+        if ($x < 1) {
+            throw ErrorConfig::forResololutionNotSupport($x);
         }
-        if ($y > 0) {
-            $this->resolution['y'] = $y;
+        if ($x > IMAGE::MAX_RESOLUTION) {
+            throw ErrorConfig::forResololutionNotSupport($x);
+        }
+        if ($x > 0) {
+            $this->resolution = $x;
         }
         return $this;
     }
@@ -136,6 +145,44 @@ trait Config {
                 foreach($config as $key => $value) {
                     $this->_set_config($key,$value);
                 }
+        }
+    }
+
+    public function getOS() {
+        switch (true) {
+            case stristr(PHP_OS, 'DAR'): return IMAGE::OS_OSX;
+            case stristr(PHP_OS, 'WIN'): return IMAGE::OS_WIN;
+            case stristr(PHP_OS, 'LINUX'): return IMAGE::OS_LINUX;
+            default : return IMAGE::OS_UNKNOWN;
+        }
+    }
+
+    protected function cekOSExtendsion(){
+        $this->useType = null;
+         if (\extension_loaded('Imagick')) {
+             $this->useType = IMAGE::IMAGICK;
+         } else {
+             if ($this->OS == IMAGE::OS_WIN) {
+                \system('where.exe choco > null', $retval);
+                if ($retval == 0) {
+                    $this->useType = IMAGE::GHOSTSCRIPT;
+                }
+             } else if($this->OS == IMAGE::OS_LINUX) {
+                \system('which gs > /dev/null', $retval);
+                if ($retval == 0) {
+                    $this->useType = IMAGE::GHOSTSCRIPT;
+                }
+             } else if($this->OS == IMAGE::OS_OSX) {
+                \system('which gs > /dev/null', $retval);
+                if ($retval == 0) {
+                    $this->useType = IMAGE::GHOSTSCRIPT;
+                }
+             } else {
+                 throw ErrorConfig::forNotSupportOS();
+             }
+         }
+        if ($this->useType != IMAGE::IMAGICK && $this->useType != IMAGE::GHOSTSCRIPT) {
+            throw ErroConfig::forNotSupportLibrary($this->useType);
         }
     }
 }
