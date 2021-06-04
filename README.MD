@@ -18,7 +18,7 @@ Installation
 
 - add convert using ghostscript
 
-### INSTALLATION EXTENSION REQUET
+### INSTALLATION EXTENSION
 
 1. Windows
    a. Ghostscript
