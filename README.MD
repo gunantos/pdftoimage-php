@@ -45,21 +45,22 @@ Installation
      ```
 
 2. Linux
-   a. Ghostscript
-   download from [ghostscript](https://www.ghostscript.com/download/gsdnld.html)
-   b. Imagick
 
-   - Centos
+   - Ghostscript
+     download from [ghostscript](https://www.ghostscript.com/download/gsdnld.html)
+   - Imagick
+
+     - Centos
+       ```sh
+         sudo yum install php-imagick
+         php -m | grep imagick
+       ```
+     - Debian
+
      ```sh
-      sudo yum install php-imagick
-      php -m | grep imagick
+       sudo apt-get install php-imagick
+       php -m | grep imagick
      ```
-   - Debian
-
-   ```sh
-     sudo apt-get install php-imagick
-     php -m | grep imagick
-   ```
 
 ### Use
 
@@ -102,7 +103,8 @@ Installation
 ### Lear More
 
 - [php](https://www.php.net/manual/en)
-- [Imagick](https://www.php.net/manual/en/book.imagick.php)
+- [Imagick](https://www.php.net/manual/en/book.imagick.php)'
+- [Ghostscript](https://www.ghostscript.com/download/gsdnld.html)
 
 ### Chat
 

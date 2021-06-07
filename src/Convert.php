@@ -11,14 +11,15 @@ use Appkita\PDFtoImage\Exceptions\InvalidFormat;
 use Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 use Appkita\PDFtoImage\IMAGE;
-
+use Appkita\PDFtoImage\Helpers;
+use Appkita\PDFtoImage\GS;
 Class Convert {
     use \Appkita\PDFtoImage\Config;
     private $_output;
     private $page = 0;
 
     function __construct(string $file='', array $config=[]) {
-        $this->OS = $this->getOS();
+        $this->OS = Helpers::getOS();
         $this->cekOSExtendsion();
         if (!empty($file)) {
             $this->setFile($file);
@@ -58,15 +59,18 @@ Class Convert {
     }
 
     private function _convert_command($filename = null) {
-
+        $gs = new GS();
+        $file_convert = $gs->toIMG($this->file, $this->path, $this->format, $page, $this->resolution, $this->quality, $this->prefix);
+        foreach($file_convert as $f) {
+            array_push($this->_output->filename, $f);
+        }
+        return $this;
     }
 
     private function _convert_imagick($filename = null) {
         $imagick = new Imagick();
-        if (isset($this->resolution['x']) && isset($this->resolution['y'])) {
-            if ($this->resolution['x'] > 0 && $this->resolution['y'] > 0) {
-                 $imagick->setResolution($this->resolution['x'], $this->resolution['y']);
-            }
+        if (isset($this->resolution) && $this->resolution > 0) {
+                 $imagick->setResolution($this->resolution, $this->resolution);
         }
        if (isset($this->size['width']) && isset($this->size['height']) && $this->size['width'] > 0 && $this->size['height'] > 0) {
            $imagick->setSize($this->size['width'], $this->size['height']);

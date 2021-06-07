@@ -9,7 +9,7 @@ use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 use Appkita\PDFtoImage\Exceptions\ErrorConfig;
 
 trait Config {
-    protected $useType = 'imagick';
+    protected $useType = null;
     protected $file = '';
     protected $format = 'png';
     protected $resolution = 144;
@@ -163,17 +163,14 @@ trait Config {
              $this->useType = IMAGE::IMAGICK;
          } else {
              if ($this->OS == IMAGE::OS_WIN) {
-                \system('where.exe choco > null', $retval);
                 if ($retval == 0) {
                     $this->useType = IMAGE::GHOSTSCRIPT;
                 }
              } else if($this->OS == IMAGE::OS_LINUX) {
-                \system('which gs > /dev/null', $retval);
                 if ($retval == 0) {
                     $this->useType = IMAGE::GHOSTSCRIPT;
                 }
              } else if($this->OS == IMAGE::OS_OSX) {
-                \system('which gs > /dev/null', $retval);
                 if ($retval == 0) {
                     $this->useType = IMAGE::GHOSTSCRIPT;
                 }
