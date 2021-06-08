@@ -1,5 +1,5 @@
 <?php
-namespace Appkita\PDFtoImage;
+namespace Appkita\PDFtoImage\Exceptions;
 use \Exception;
 
 class ErrorConfig extends Exception {

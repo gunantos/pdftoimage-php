@@ -8,6 +8,7 @@ use \Appkita\PDFtoImage\Exceptions\PdfDoesNotExist;
 use \Appkita\PDFtoImage\Exceptions\PageDoesNotExist;
 use Appkita\PDFtoImage\Exceptions\ErrorConfig;
 
+use Appkita\PDFtoImage\GS;
 trait Config {
     protected $useType = null;
     protected $file = '';
@@ -32,10 +33,15 @@ trait Config {
     public function setFile($file) {
         $validate = new FileValidate($file);
         $this->file = $validate->get();
-        $imagick = new Imagick();
-        $imagick->pingImage($this->file);
-        $this->count_page = $imagick->getNumberImages();
-        $imagick->clear();
+        if ($this->useType == IMAGE::GHOSTSCRIPT) {
+            $gs = new GS();
+            $this->count_page = $gs->getNumberOfPages($this->file);
+        } else {
+            $imagick = new Imagick();
+            $imagick->pingImage($this->file);
+            $this->count_page = $imagick->getNumberImages();
+            $imagick->clear();
+        }
         return $this;
     }
 
@@ -148,38 +154,18 @@ trait Config {
         }
     }
 
-    public function getOS() {
-        switch (true) {
-            case stristr(PHP_OS, 'DAR'): return IMAGE::OS_OSX;
-            case stristr(PHP_OS, 'WIN'): return IMAGE::OS_WIN;
-            case stristr(PHP_OS, 'LINUX'): return IMAGE::OS_LINUX;
-            default : return IMAGE::OS_UNKNOWN;
-        }
-    }
-
     protected function cekOSExtendsion(){
-        $this->useType = null;
-         if (\extension_loaded('Imagick')) {
-             $this->useType = IMAGE::IMAGICK;
-         } else {
-             if ($this->OS == IMAGE::OS_WIN) {
-                if ($retval == 0) {
-                    $this->useType = IMAGE::GHOSTSCRIPT;
-                }
-             } else if($this->OS == IMAGE::OS_LINUX) {
-                if ($retval == 0) {
-                    $this->useType = IMAGE::GHOSTSCRIPT;
-                }
-             } else if($this->OS == IMAGE::OS_OSX) {
-                if ($retval == 0) {
-                    $this->useType = IMAGE::GHOSTSCRIPT;
-                }
-             } else {
-                 throw ErrorConfig::forNotSupportOS();
-             }
-         }
-        if ($this->useType != IMAGE::IMAGICK && $this->useType != IMAGE::GHOSTSCRIPT) {
-            throw ErroConfig::forNotSupportLibrary($this->useType);
+        if (empty($this->useType)) {
+            if (\extension_loaded('Imagick')) {
+                $this->useType = IMAGE::IMAGICK;
+            } else {
+                $gs = new GS();
+                $gs->init();
+                $this->useType = IMAGE::GHOSTSCRIPT;
+            }
+            if ($this->useType != IMAGE::IMAGICK && $this->useType != IMAGE::GHOSTSCRIPT) {
+                throw ErroConfig::forNotSupportLibrary($this->useType);
+            }
         }
     }
 }

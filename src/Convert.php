@@ -28,6 +28,13 @@ Class Convert {
         $this->_output->filename = [];
         $this->_output->error = [];
         $this->initConfig($config);
+        if (empty($this->path)) {
+            $dir = \dirname(__FILE__).DIRECTORY_SEPARATOR.'temp'.DIRECTORY_SEPARATOR;
+            if (!\file_exists($dir)) {
+                \mkdir($dir, 0777);
+            }
+            $this->path = $dir;
+        }
     }
 
     public function __get($name) {
@@ -61,6 +68,7 @@ Class Convert {
     private function _convert_command($filename = null) {
         $gs = new GS();
         $file_convert = $gs->toIMG($this->file, $this->path, $this->format, $page, $this->resolution, $this->quality, $this->prefix);
+        die(\json_encode($file_convert));
         foreach($file_convert as $f) {
             array_push($this->_output->filename, $f);
         }
@@ -112,7 +120,11 @@ Class Convert {
             $filename = $output;
         }
         if ($this->count_page > 0) {
-            $this->_convert($filename);
+            if ($this->useType == IMAGE::GHOSTSCRIPT) {
+                $this->_convert_command();
+            } else {
+                $this->_convert_imagick();
+            }
         }
         return $this->_output->filename;
     }

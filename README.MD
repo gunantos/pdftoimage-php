@@ -23,6 +23,7 @@ Installation
 1. Windows
    a. Ghostscript
    download from [ghostscript](https://www.ghostscript.com/download/gsdnld.html)
+   add your gs bin folder to PATH Environment
    b. Imagick
 
    - Check PHP Version `php -i|find "PHP Version"`

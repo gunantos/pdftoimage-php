@@ -10,4 +10,18 @@ class Helpers {
             default : return IMAGE::OS_UNKNOWN;
         }
     }
+
+    public static function isFileExistPath(string $path, $file) {
+        if (!\is_array($file)) {
+            $file = [$file];
+        }
+        $path = str_replace('\\', DIRECTORY_SEPARATOR, \str_replace('/', DIRECTORY_SEPARATOR, $path));
+        $path = \rtrim($path, DIRECTORY_SEPARATOR);
+        foreach($file as $fl) {
+            if (!\file_exists($path.DIRECTORY_SEPARATOR.$fl)) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

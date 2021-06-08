@@ -59,11 +59,14 @@ class GS {
         if($this->GS_CMD == GS::GS_CMD_WIN32 || $this->GS_CMD == GS::GS_CMD_WIN64){
             $pdf = str_replace('\\', '/', $pdf);
         }
-        $pages = $this->executeGS('-q -dNODISPLAY -c "('.$this->pdf.') (r) file runpdfbegin pdfpagecount = quit"',true);
+        $pages = $this->execute('-q -dNOSAFER -dNODISPLAY -c "('.$pdf.') (r) file runpdfbegin pdfpagecount = quit" -f '. $pdf ,true);
         return intval($pages);
     }
 
-    public function toIMG($pdf, $output, $ext = GS::FORMAT_PNG, $page = 0, $resolution = 300, $quality = 100, $prefix = 'conv', $pngScaleFactor = null  ){
+    public function toIMG($pdf, string $output, $ext = GS::FORMAT_PNG, $page = 0, $resolution = 300, $quality = 100, $prefix = 'conv', $pngScaleFactor = null  ){
+        if (!\file_exists($pdf)) {
+            throw new PdfDoesNotExist($pdf);
+        }
         $page = $this->getpage($page);
         $ttl_page = $this->getNumberOfPages($pdf);
         if($page['start'] > $ttl_page) {
@@ -90,17 +93,26 @@ class GS {
             $imageDeviceCommand = 'png16m';
             $downscalefactor = '';
         }
-        
-        $image_path = $output."/".$prefix."%d.".$ext;
-        $output = $this->executeGS("-dSAFER -dBATCH -dNOPAUSE -sDEVICE=".$imageDeviceCommand." ".$downscalefactor." -r".$resolution." -dNumRenderingThreads=4 -dFirstPage=".$page['start']." -dLastPage=".$page['end']." -o\"".$image_path."\" -dJPEGQ=".$quality." -q \"".($pdf)."\" -c quit");
+        $nama_file = \basename($pdf, '.pdf');
+        $image_path = $output."/".$nama_file;
+        if (!empty($ext)) {
+            $image_path .= '-'. $prefix;
+        }
+        $image_path.= '-%d.'. $ext;
+        $cmd = "-dNOSAFER -dBATCH -dNOPAUSE -sDEVICE=".$imageDeviceCommand." ".$downscalefactor." -r".$resolution." -dNumRenderingThreads=4 -dFirstPage=".$page['start']." -dLastPage=".$page['end']." -o\"".$image_path."\" -dJPEGQ=".$quality." -q \"".($pdf)."\" -c quit";
+        $run = $this->execute($cmd);
 
         $fileArray = [];
-        $tf =  $page['end'] - $page['start'];
-        for($i=1; $i< ($page['end'] - $page['start']); ++$i){
-            $fileArray[] = $prefix."$i.".$ext;
+        for($i=0; $i< ($page['end'] - $page['start']); ++$i){
+            $fn = $nama_file;
+            if (!empty($prefix)) {
+                $fn .= '-'. $prefix;
+            }
+            $fn .= '-'. ($i + 1) .'.'. $ext;
+            $fileArray[] = $fn;
         }
-        if(!$this->checkFilesExists($output, $fileArray)){
-            $errrorinfo = implode(",", $output);
+        if(!Helpers::isFileExistPath($output, $fileArray)){
+            $errrorinfo = implode(",", $fileArray);
             throw new \Exception('PDF_CONVERSION_ERROR '.$errrorinfo);
         }
         return $fileArray;
@@ -116,7 +128,7 @@ class GS {
         }
         $psfile  = $this->getGSLibFilePath('viewjpeg.ps');
         $command = '-dBATCH -dNOPAUSE -sDEVICE=pdfwrite -o"'.$output.'" "'.$psfile .'" -c "'.$res.'"';
-        $command_results = $this->executeGS($command);
+        $command_results = $this->execute($command);
         if(!$this->checkFilesExists("",[$output])){
             throw new \Exception("Unable to make PDF : ".$command_results[2],500);
         }
@@ -127,19 +139,19 @@ class GS {
         return $this->_execute($this->GS_CMD.' '. $command, $is_shell);
     }
 
-    protected function init() {
+    public function init() {
         if (empty($this->PATH)) {
             if ($this->OS = IMAGE::OS_WIN) {
                 if (trim($gs_bin_path = $this->_execute('where '. GS::GS_CMD_WIN64, true))) {
                     $this->GS_64 = true;
-                    $this->GS_CMD = 'gswin64c.exe';
+                    $this->GS_CMD = GS::GS_CMD_WIN64;
                     $this->GS_PATH = trim(\str_replace("bin\\". $this->GS_CMD, "", $gs_bin_path));
                 } else  if (trim($gs_bin_path = $this->_execute('where '. GS::GS_CMD_WIN32, true))) {
                     $this->GS_64 = false;
-                    $this->GS_CMD = 'gswin32c.exe';
+                    $this->GS_CMD = GS::GS_CMD_WIN32;
                     $this->GS_PATH = trim(\str_replace("bin\\". $this->GS_CMD, "", $gs_bin_path));
                 } else {
-                    throw ErroConfig::forNotSupportLibrary('Ghostscript');
+                    throw ErrorConfig::forNotSupportLibrary('Ghostscript');
                 }
                 $output =  $this->_execute($this->GS_CMD.' --version 2>&1');
                 $this->GS_VERSION =  doubleval($output[0]);
