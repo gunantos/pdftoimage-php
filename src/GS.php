@@ -108,17 +108,19 @@ class GS {
 
         $fileArray = [];
         for($i=0; $i< ($page['end'] - $page['start']); ++$i){
-            $fn = $nama_file;
+            $fn = $image_path;
             if (!empty($prefix)) {
                 $fn .= '-'. $prefix;
             }
             $fn .= '-'. ($i + 1) .'.'. $ext;
-            $fileArray[] = $fn;
+            if (!\file_exists($fn)) {
+                $fileArray[] = $fn;
+            }
         }
-        if(!Helpers::isFileExistPath($image_path, $fileArray)){
-            $errrorinfo = implode(",", $fileArray);
-            throw new \Exception('PDF_CONVERSION_ERROR '.$errrorinfo);
-        }
+       # if(!Helpers::isFileExistPath($image_path, $fileArray)){
+       #     $errrorinfo = implode(",", $fileArray);
+       #     throw new \Exception('PDF_CONVERSION_ERROR '.$errrorinfo);
+       # }
         return $fileArray;
     }
 

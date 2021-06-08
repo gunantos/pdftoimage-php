@@ -19,7 +19,7 @@ trait Config {
         'height'=>1024
     ];
     protected $path = '';
-    protected $prefix = 'convert';
+    protected $prefix = 'page';
     protected $layer_method = Imagick::LAYERMETHOD_FLATTEN;
     protected $colorspace;
     protected $quality;
