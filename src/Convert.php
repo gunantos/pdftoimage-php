@@ -139,11 +139,23 @@ Class Convert {
             $filename = $_temp.'-'. $indeks .'-of-'. $this->count_page .'.'. $ext;
         } else {
             $pdffilename = basename($this->file,".pdf");
-            $filename = $this->_get_config('path', true).$pdffilename.'-'.$this->_get_config('prefix', true);
-            if ($indeks > 0) {
-                $filename .= $indeks;
+        
+            $pathname =str_replace(' ', '_', $pdffilename);
+            $pathname = preg_replace('/[^A-Za-z0-9\_]/', '', $pathname);
+        
+            $image_path =  $this->_get_config('path', true).$pathname.DIRECTORY_SEPARATOR;
+
+            if (!\file_exists($image_path)) {
+                @mkdir($image_path, 0777);
             }
-            $filename .= $this->_get_config('format', true);
+            $prefix = $this->_get_config('prefix', true);
+            if (!empty($prefix)) {
+                $image_path .= $prefix;
+            }
+            if ($indeks > 0) {
+                $image_path .= '-'. $indeks;
+            }
+            $filename = $image_path . $this->_get_config('format', true);
         }
         return $filename;
     }

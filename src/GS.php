@@ -94,7 +94,11 @@ class GS {
             $downscalefactor = '';
         }
         $nama_file = \basename($pdf, '.pdf');
-        $image_path = $output.DIRECTORY_SEPARATOR.$nama_file.DIRECTORY_SEPARATOR;
+        
+        $pathname =str_replace(' ', '_', $filename);
+        $pathname = preg_replace('/[^A-Za-z0-9\_]/', '', $pathname);
+        
+        $image_path = $output.DIRECTORY_SEPARATOR.$pathname.DIRECTORY_SEPARATOR;
         if (!\file_exists($image_path)) {
             @mkdir($image_path, 0777);
         }
