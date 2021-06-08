@@ -63,7 +63,7 @@ class GS {
         return intval($pages);
     }
 
-    public function toIMG($pdf, string $output, $ext = GS::FORMAT_PNG, $page = 0, $resolution = 300, $quality = 100, $prefix = 'conv', $pngScaleFactor = null  ){
+    public function toIMG($pdf, string $output, $ext = GS::FORMAT_PNG, $page = 0, $resolution = 300, $quality = 100, $prefix = 'page', $pngScaleFactor = null  ){
         if (!\file_exists($pdf)) {
             throw new PdfDoesNotExist($pdf);
         }
@@ -94,12 +94,16 @@ class GS {
             $downscalefactor = '';
         }
         $nama_file = \basename($pdf, '.pdf');
-        $image_path = $output."/".$nama_file;
-        if (!empty($ext)) {
-            $image_path .= '-'. $prefix;
+        $image_path = $output.DIRECTORY_SEPARATOR.$nama_file.DIRECTORY_SEPARATOR;
+        if (!\file_exists($image_path)) {
+            @mkdir($image_path, 0777);
         }
-        $image_path.= '-%d.'. $ext;
-        $cmd = "-dNOSAFER -dBATCH -dNOPAUSE -sDEVICE=".$imageDeviceCommand." ".$downscalefactor." -r".$resolution." -dNumRenderingThreads=4 -dFirstPage=".$page['start']." -dLastPage=".$page['end']." -o\"".$image_path."\" -dJPEGQ=".$quality." -q \"".($pdf)."\" -c quit";
+        $output_name = $image_path;
+        if (!empty($ext)) {
+            $output_name = $prefix;
+        }
+        $output_name .= '-%d.'. $ext;
+        $cmd = "-dNOSAFER -dBATCH -dNOPAUSE -sDEVICE=".$imageDeviceCommand." ".$downscalefactor." -r".$resolution." -dNumRenderingThreads=4 -dFirstPage=".$page['start']." -dLastPage=".$page['end']." -o\"".$output_name."\" -dJPEGQ=".$quality." -q \"".($pdf)."\" -c quit";
         $run = $this->execute($cmd);
 
         $fileArray = [];
@@ -111,7 +115,7 @@ class GS {
             $fn .= '-'. ($i + 1) .'.'. $ext;
             $fileArray[] = $fn;
         }
-        if(!Helpers::isFileExistPath($output, $fileArray)){
+        if(!Helpers::isFileExistPath($image_path, $fileArray)){
             $errrorinfo = implode(",", $fileArray);
             throw new \Exception('PDF_CONVERSION_ERROR '.$errrorinfo);
         }
