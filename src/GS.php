@@ -97,7 +97,9 @@ class GS {
         
         $pathname =str_replace(' ', '_', $nama_file);
         $pathname = preg_replace('/[^A-Za-z0-9\_]/', '', $pathname);
-        $output = \rtrim($output, DIRECTORY_SEPARATOR);
+        $output = \rtrim($output, '\\');
+        $output = \rtrim($output, '/');
+        
 
         $image_path = $output.DIRECTORY_SEPARATOR.$pathname;
         if (!\file_exists($image_path)) {
