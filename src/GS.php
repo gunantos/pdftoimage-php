@@ -95,18 +95,19 @@ class GS {
         }
         $nama_file = \basename($pdf, '.pdf');
         
-        $pathname =str_replace(' ', '_', $filename);
+        $pathname =str_replace(' ', '_', $nama_file);
         $pathname = preg_replace('/[^A-Za-z0-9\_]/', '', $pathname);
-        
-        $image_path = $output.DIRECTORY_SEPARATOR.$pathname.DIRECTORY_SEPARATOR;
+        $output = \rtrim($output, DIRECTORY_SEPARATOR);
+
+        $image_path = $output.DIRECTORY_SEPARATOR.$pathname;
         if (!\file_exists($image_path)) {
             @mkdir($image_path, 0777);
         }
         $output_name = $image_path;
         if (!empty($ext)) {
-            $output_name = $prefix;
+            $output_name = $prefix .'-';
         }
-        $output_name .= '-%d.'. $ext;
+        $output_name .= '%d.'. $ext;
         $cmd = "-dNOSAFER -dBATCH -dNOPAUSE -sDEVICE=".$imageDeviceCommand." ".$downscalefactor." -r".$resolution." -dNumRenderingThreads=4 -dFirstPage=".$page['start']." -dLastPage=".$page['end']." -o\"".$output_name."\" -dJPEGQ=".$quality." -q \"".($pdf)."\" -c quit";
         $run = $this->execute($cmd);
 

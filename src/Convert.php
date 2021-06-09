@@ -67,8 +67,7 @@ Class Convert {
 
     private function _convert_command($filename = null) {
         $gs = new GS();
-        $file_convert = $gs->toIMG($this->file, $this->path, $this->format, $page, $this->resolution, $this->quality, $this->prefix);
-        die(\json_encode($file_convert));
+        $file_convert = $gs->toIMG($this->file, $this->path, $this->format, $this->page, $this->resolution, $this->quality, $this->prefix);
         foreach($file_convert as $f) {
             array_push($this->_output->filename, $f);
         }
