@@ -116,10 +116,10 @@ class GS {
         for($i=0; $i< ($page['end'] - $page['start']); ++$i){
             $fn = $image_path;
             if (!empty($prefix)) {
-                $fn .= '-'. $prefix;
+                $fn .= $prefix .'-';
             }
-            $fn .= '-'. ($i + 1) .'.'. $ext;
-            if (!\file_exists($fn)) {
+            $fn .= ($i + 1) .'.'. $ext;
+            if (\file_exists($fn)) {
                 $fileArray[] = $fn;
             }
         }
