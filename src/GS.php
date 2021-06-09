@@ -99,7 +99,6 @@ class GS {
         $pathname = preg_replace('/[^A-Za-z0-9\_]/', '', $pathname);
         $output = \rtrim($output, '\\');
         $output = \rtrim($output, '/');
-        
 
         $image_path = $output.DIRECTORY_SEPARATOR.$pathname.DIRECTORY_SEPARATOR;
         if (!\file_exists($image_path)) {
@@ -107,7 +106,7 @@ class GS {
         }
         $output_name = $image_path;
         if (!empty($ext)) {
-            $output_name = $prefix .'-';
+            $output_name .= $prefix .'-';
         }
         $output_name .= '%d.'. $ext;
         $cmd = "-dNOSAFER -dBATCH -dNOPAUSE -sDEVICE=".$imageDeviceCommand." ".$downscalefactor." -r".$resolution." -dNumRenderingThreads=4 -dFirstPage=".$page['start']." -dLastPage=".$page['end']." -o\"".$output_name."\" -dJPEGQ=".$quality." -q \"".($pdf)."\" -c quit";
