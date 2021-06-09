@@ -101,7 +101,7 @@ class GS {
         $output = \rtrim($output, '/');
         
 
-        $image_path = $output.DIRECTORY_SEPARATOR.$pathname;
+        $image_path = $output.DIRECTORY_SEPARATOR.$pathname.DIRECTORY_SEPARATOR;
         if (!\file_exists($image_path)) {
             @mkdir($image_path, 0777);
         }
