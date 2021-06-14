@@ -170,7 +170,7 @@ class GS {
             } else {
                 $output = $this->_execute('gs --version 2>&1');
                 if(!((is_array($output) && (strpos($output[0], 'is not recognized as an internal or external command') !== false)) || !is_array($output) && trim($output) == "")){
-                    $this->GS_CMD = GS::GS_LINUX;
+                    $this->GS_CMD = GS::GS_CMD_LINUX;
                     $this->GS_VERSION = doubleval($output[0]);
                     $this->GS_PATH = ""; // The ghostscript will find the path itself
                     $this->GS_64 = false;
