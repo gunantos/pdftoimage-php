@@ -7,7 +7,7 @@ class ErrorConfig extends Exception {
         return (new static("{$e} not support the resolution"));
     }
 
-    public static function forNotSupportLibrary($lib) {
+    public static function forNotSupportLibrary($e) {
          return (new static("{$e} not support library"));
     }
 
