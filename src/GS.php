@@ -113,7 +113,7 @@ class GS {
         $run = $this->execute($cmd);
 
         $fileArray = [];
-        for($i=0; $i< ($page['end'] - $page['start']); ++$i){
+        for($i=0; $i< (($page['end'] - $page['start']) + 1); ++$i){
             $fn = $image_path;
             if (!empty($prefix)) {
                 $fn .= $prefix .'-';
