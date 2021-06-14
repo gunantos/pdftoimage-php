@@ -153,7 +153,7 @@ class GS {
 
     public function init() {
         if (empty($this->PATH)) {
-            if ($this->OS = IMAGE::OS_WIN) {
+            if ($this->OS == IMAGE::OS_WIN) {
                 if (trim($gs_bin_path = $this->_execute('where '. GS::GS_CMD_WIN64, true))) {
                     $this->GS_64 = true;
                     $this->GS_CMD = GS::GS_CMD_WIN64;
