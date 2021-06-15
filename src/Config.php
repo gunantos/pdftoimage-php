@@ -33,6 +33,10 @@ trait Config {
     public function setFile($file) {
         $validate = new FileValidate($file);
         $this->file = $validate->get();
+        return $this;
+    }
+
+    public function getCount() {
         if ($this->useType == IMAGE::GHOSTSCRIPT) {
             $gs = new GS();
             $this->count_page = $gs->getNumberOfPages($this->file);
@@ -42,7 +46,7 @@ trait Config {
             $this->count_page = $imagick->getNumberImages();
             $imagick->clear();
         }
-        return $this;
+        return $this->count_page;
     }
 
     public function setUse($use) {

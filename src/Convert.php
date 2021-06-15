@@ -118,6 +118,8 @@ Class Convert {
         } else {
             $filename = $output;
         }
+        
+        $ttl = $this->getCount();
         if ($this->count_page > 0) {
             if ($this->useType == IMAGE::GHOSTSCRIPT) {
                 $this->_convert_command();
